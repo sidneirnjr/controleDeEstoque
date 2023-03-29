@@ -1,62 +1,43 @@
-import tkinter as tk
-from produto import Produto
-from estoque import Estoque
+import PySimpleGUI as sg
+from src.menu import menu_cadastro, menu_consulta, menu_relatorio, menu_estoque
 
-class Aplicacao(tk.Tk):
-    def __init__(self):
-        super().__init__()
 
-        self.title('Controle de Estoque')
+# Define o layout da janela principal
+layout = [
+    [sg.Text('Controle de Estoque', font=('Helvetica', 20), justification='center')],
+    [sg.Text('Selecione uma opção:', font=('Helvetica', 14), justification='center')],
+    [sg.Button('Cadastro de Produto', font=('Helvetica', 12)), sg.Button('Consulta de Produto', font=('Helvetica', 12))],
+    [sg.Button('Alteração de Produto', font=('Helvetica', 12)), sg.Button('Remoção de Produto', font=('Helvetica', 12))],
+    [sg.Button('Relatório de Produtos', font=('Helvetica', 12)), sg.Button('Estoque', font=('Helvetica', 12))],
+    [sg.Button('Sair', font=('Helvetica', 12))]
+]
 
-        self.estoque = Estoque()
+# Cria a janela principal
+janela = sg.Window('Controle de Estoque', layout)
 
-        self.criar_widgets()
+# Loop principal da aplicação
+while True:
+    evento, valores = janela.read()
+    if evento == sg.WINDOW_CLOSED or evento == 'Sair':
+        break
+    elif evento == 'Cadastro de Produto':
+        # Chama o menu de cadastro de produto
+        menu_cadastro()
+    elif evento == 'Consulta de Produto':
+        # Chama o menu de consulta de produto
+        menu_consulta()
+    elif evento == 'Alteração de Produto':
+        # Chama o menu de alteração de produto
+        menu_cadastro(edit=True)
+    elif evento == 'Remoção de Produto':
+        # Chama o menu de remoção de produto
+        menu_consulta(remove=True)
+    elif evento == 'Relatório de Produtos':
+        # Chama o menu de relatório de produtos
+        menu_relatorio()
+    elif evento == 'Estoque':
+        # Chama o menu de controle de estoque
+        menu_estoque()
 
-    def criar_widgets(self):
-        # Label e Entry para o nome do produto
-        tk.Label(self, text='Nome do produto:').grid(row=0, column=0)
-        self.nome_produto_entry = tk.Entry(self)
-        self.nome_produto_entry.grid(row=0, column=1)
-
-        # Label e Entry para o tamanho do produto
-        tk.Label(self, text='Tamanho do produto:').grid(row=1, column=0)
-        self.tamanho_produto_entry = tk.Entry(self)
-        self.tamanho_produto_entry.grid(row=1, column=1)
-
-        # Label e Entry para o preço do produto
-        tk.Label(self, text='Preço do produto:').grid(row=2, column=0)
-        self.preco_produto_entry = tk.Entry(self)
-        self.preco_produto_entry.grid(row=2, column=1)
-
-        # Label e Entry para a quantidade do produto
-        tk.Label(self, text='Quantidade do produto:').grid(row=3, column=0)
-        self.quantidade_produto_entry = tk.Entry(self)
-        self.quantidade_produto_entry.grid(row=3, column=1)
-
-        # Botão para adicionar o produto ao estoque
-        self.adicionar_produto_button = tk.Button(self, text='Adicionar Produto', command=self.adicionar_produto)
-        self.adicionar_produto_button.grid(row=4, column=0, columnspan=2)
-
-        # Text widget para exibir a lista de produtos no estoque
-        self.produtos_text = tk.Text(self, width=50, height=10)
-        self.produtos_text.grid(row=5, column=0, columnspan=2)
-
-    def adicionar_produto(self):
-        nome = self.nome_produto_entry.get()
-        tamanho = self.tamanho_produto_entry.get()
-        preco = float(self.preco_produto_entry.get())
-        quantidade = int(self.quantidade_produto_entry.get())
-
-        produto = Produto(nome, tamanho, preco, quantidade)
-        self.estoque.adicionar_produto(produto)
-
-        self.atualizar_lista_produtos()
-
-    def atualizar_lista_produtos(self):
-        self.produtos_text.delete('1.0', tk.END)
-        for produto in self.estoque.produtos:
-            self.produtos_text.insert(tk.END, f'{produto}\n')
-
-if __name__ == '__main__':
-    app = Aplicacao()
-    app.mainloop()
+# Fecha a janela principal e encerra a aplicação
+janela.close()
