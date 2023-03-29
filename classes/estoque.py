@@ -5,12 +5,30 @@ class Estoque:
     def adicionar_produto(self, produto):
         self.produtos.append(produto)
 
-    def remover_produto(self, produto):
-        self.produtos.remove(produto)
+    def remover_produto(self, codigo):
+        produto = self.pesquisar_por_palavra_chave(codigo)
+        if produto is not None:
+            self.produtos.remove(produto)
+            print("Produto removido com sucesso!")
+        else:
+            print("Produto não encontrado.")
 
-    def pesquisar(self, chave):
-        resultados = []
+    def alterar_quantidade(self, codigo, quantidade):
+        produto = self.pesquisar_por_palavra_chave(codigo)
+        if produto is not None:
+            produto.set_quantidade(quantidade)
+            print("Quantidade alterada com sucesso!")
+        else:
+            print("Produto não encontrado.")
+
+    def listar_produtos(self):
         for produto in self.produtos:
-            if chave.lower() in produto.get_codigo().lower() or chave.lower() in produto.get_nome().lower():
-                resultados.append(produto)
-        return resultados
+            produto.imprimir()
+
+    def pesquisar_por_palavra_chave(self, palavra_chave):
+        for produto in self.produtos:
+            if palavra_chave.lower() in produto.get_nome().lower() or palavra_chave.lower() in produto.get_descricao().lower():
+                return produto
+        return None
+
+
