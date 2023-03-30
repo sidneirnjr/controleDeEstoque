@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter import messagebox
-from .estoque import Estoque, EstoqueInterface
+from .estoque import Estoque
 
 
 class Estoque:
@@ -141,10 +141,11 @@ class EstoqueInterface:
         else:
             messagebox.showerror("Erro", "Não foi possível obter o estoque.")
 
-    if __name__ == '__main__':
-        root = Tk()
-        app = EstoqueInterface(root)
-        root.mainloop()
+
+if __name__ == '__main__':
+    root = Tk()
+    app = EstoqueInterface(root)
+    root.mainloop()
 
 
 
