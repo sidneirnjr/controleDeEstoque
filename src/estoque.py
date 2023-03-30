@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter import messagebox
-from .estoque import Estoque
+from estoque import Estoque
 
 
 class Estoque:
